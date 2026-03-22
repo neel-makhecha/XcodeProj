@@ -4,7 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "XcodeProj",
-    platforms: [.macOS(.v11), .iOS(.v26)],
+    platforms: [.macOS(.v11), .iOS(.v18)],
     products: [
         .library(name: "XcodeProj", targets: ["XcodeProj"]),
     ],
