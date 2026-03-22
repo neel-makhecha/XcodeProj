@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(Glibc)
+import Glibc
+#endif
 
 // swiftlint:disable all
 import PathKit
@@ -6,10 +9,10 @@ import PathKit
 // MARK: - Path extras.
 
 func systemGlob(_ pattern: UnsafePointer<CChar>!, _ flags: Int32, _ errfunc: (@convention(c) (UnsafePointer<CChar>?, Int32) -> Int32)!, _ vector_ptr: UnsafeMutablePointer<glob_t>!) -> Int32 {
-    #if os(macOS)
-        return Darwin.glob(pattern, flags, errfunc, vector_ptr)
-    #else
+    #if canImport(Glibc)
         return Glibc.glob(pattern, flags, errfunc, vector_ptr)
+    #else
+        return Darwin.glob(pattern, flags, errfunc, vector_ptr)
     #endif
 }
 
@@ -37,10 +40,10 @@ extension Path {
 
         let flags = GLOB_TILDE | GLOB_BRACE | GLOB_MARK
         if systemGlob(cPattern, flags, nil, &gt) == 0 {
-            #if os(macOS)
-                let matchc = gt.gl_matchc
-            #else
+            #if canImport(Glibc)
                 let matchc = gt.gl_pathc
+            #else
+                let matchc = gt.gl_matchc
             #endif
             return (0 ..< Int(matchc)).compactMap { index in
                 if let path = String(validatingCString: gt.gl_pathv[index]!) {

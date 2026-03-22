@@ -4,13 +4,13 @@ import PackageDescription
 
 let package = Package(
     name: "XcodeProj",
-    platforms: [.macOS(.v11)],
+    platforms: [.macOS(.v11), .iOS(.v13)],
     products: [
         .library(name: "XcodeProj", targets: ["XcodeProj"]),
     ],
     dependencies: [
         .package(url: "https://github.com/tadija/AEXML.git", .upToNextMinor(from: "4.7.0")),
-        .package(url: "https://github.com/kylef/PathKit.git", .upToNextMinor(from: "1.0.1")),
+        .package(path: "../PathKit"),
     ],
     targets: [
         .target(name: "XcodeProj",
